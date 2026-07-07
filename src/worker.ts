@@ -12,7 +12,7 @@ interface AssetsBinding {
 }
 
 interface Env {
-  ASSETS: AssetsBinding
+  ASSETS?: AssetsBinding
   DB?: D1Database
   NOTIFY_WEBHOOK_URL?: string
 }
@@ -148,6 +148,10 @@ export default {
 
     if (url.pathname === '/api/demo-request') {
       return handleDemoRequest(request, env)
+    }
+
+    if (!env.ASSETS) {
+      return new Response('Static assets binding ASSETS is not configured.', { status: 500 })
     }
 
     return env.ASSETS.fetch(request)
