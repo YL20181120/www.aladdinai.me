@@ -7,12 +7,7 @@ interface D1Database {
   prepare(query: string): D1PreparedStatement
 }
 
-interface AssetsBinding {
-  fetch(request: Request): Promise<Response>
-}
-
 interface Env {
-  ASSETS?: AssetsBinding
   DB?: D1Database
   NOTIFY_WEBHOOK_URL?: string
 }
@@ -146,14 +141,15 @@ export default {
   async fetch(request: Request, env: Env) {
     const url = new URL(request.url)
 
-    if (url.pathname === '/api/demo-request') {
-      return handleDemoRequest(request, env)
-    }
+    try {
+      if (url.pathname === '/api/demo-request') {
+        return await handleDemoRequest(request, env)
+      }
 
-    if (!env.ASSETS) {
-      return new Response('Static assets binding ASSETS is not configured.', { status: 500 })
+      return jsonResponse({ ok: false, message: 'Not found.' }, 404)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Internal server error.'
+      return jsonResponse({ ok: false, message }, 500)
     }
-
-    return env.ASSETS.fetch(request)
   },
 }
