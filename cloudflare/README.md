@@ -21,6 +21,18 @@ D1 binding: DB
 D1 database: aladdinai
 ```
 
+## Turnstile
+
+The demo form uses Cloudflare Turnstile to reduce spam submissions.
+
+The public site key is embedded in `src/components/DemoModal.vue`. Add the secret key as a Worker environment variable:
+
+```text
+TURNSTILE_SECRET_KEY=<your-turnstile-secret-key>
+```
+
+Do not commit the Turnstile secret key to the repository.
+
 ## D1
 
 Yes, D1 tables must be created manually. Run the schema once after creating or resetting the D1 database:

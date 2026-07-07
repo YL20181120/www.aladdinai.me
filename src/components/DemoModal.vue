@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import { useSiteLocale } from '@/composables/useSiteLocale'
 
 const props = defineProps<{
@@ -14,6 +14,27 @@ const { currentLocale, t } = useSiteLocale()
 
 type SubmitStatus = 'idle' | 'success' | 'error'
 
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: HTMLElement,
+        options: {
+          sitekey: string
+          callback: (token: string) => void
+          'expired-callback': () => void
+          'error-callback': () => void
+          theme?: 'auto' | 'dark' | 'light'
+        },
+      ) => string
+      reset: (widgetId?: string) => void
+      remove: (widgetId: string) => void
+    }
+  }
+}
+
+const turnstileSiteKey = '0x4AAAAAADxPCU5fwmVob9L7'
+
 const formState = reactive({
   name: '',
   contact: '',
@@ -25,6 +46,10 @@ const formState = reactive({
 const submitStatus = ref<SubmitStatus>('idle')
 const isSubmitting = ref(false)
 const statusMessage = ref('')
+const turnstileContainer = ref<HTMLElement | null>(null)
+const turnstileToken = ref('')
+let turnstileWidgetId = ''
+let turnstileScriptPromise: Promise<void> | null = null
 
 const industryOptions = [
   ['banking', '传统银行', 'Traditional Banking'],
@@ -43,15 +68,99 @@ const scaleOptions = [
 
 watch(
   () => props.open,
-  (open) => {
+  async (open) => {
     document.body.style.overflow = open ? 'hidden' : ''
     if (open) {
       submitStatus.value = 'idle'
       statusMessage.value = ''
+      await nextTick()
+      renderTurnstile()
+    } else {
+      removeTurnstile()
     }
   },
   { immediate: true },
 )
+
+function loadTurnstile() {
+  if (window.turnstile) {
+    return Promise.resolve()
+  }
+
+  if (turnstileScriptPromise) {
+    return turnstileScriptPromise
+  }
+
+  turnstileScriptPromise = new Promise((resolve, reject) => {
+    const existingScript = document.querySelector<HTMLScriptElement>('script[data-turnstile-script="true"]')
+
+    if (existingScript) {
+      existingScript.addEventListener('load', () => resolve(), { once: true })
+      existingScript.addEventListener('error', () => reject(new Error('Turnstile failed to load.')), { once: true })
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+    script.async = true
+    script.defer = true
+    script.dataset.turnstileScript = 'true'
+    script.addEventListener('load', () => resolve(), { once: true })
+    script.addEventListener('error', () => reject(new Error('Turnstile failed to load.')), { once: true })
+    document.head.append(script)
+  })
+
+  return turnstileScriptPromise
+}
+
+async function renderTurnstile() {
+  if (!turnstileContainer.value || turnstileWidgetId) {
+    return
+  }
+
+  try {
+    await loadTurnstile()
+
+    if (!window.turnstile || !turnstileContainer.value || turnstileWidgetId) {
+      return
+    }
+
+    turnstileWidgetId = window.turnstile.render(turnstileContainer.value, {
+      sitekey: turnstileSiteKey,
+      theme: 'dark',
+      callback: (token) => {
+        turnstileToken.value = token
+      },
+      'expired-callback': () => {
+        turnstileToken.value = ''
+      },
+      'error-callback': () => {
+        turnstileToken.value = ''
+      },
+    })
+  } catch {
+    submitStatus.value = 'error'
+    statusMessage.value = t.value.submitError
+  }
+}
+
+function resetTurnstile() {
+  turnstileToken.value = ''
+
+  if (window.turnstile && turnstileWidgetId) {
+    window.turnstile.reset(turnstileWidgetId)
+  }
+}
+
+function removeTurnstile() {
+  turnstileToken.value = ''
+
+  if (window.turnstile && turnstileWidgetId) {
+    window.turnstile.remove(turnstileWidgetId)
+  }
+
+  turnstileWidgetId = ''
+}
 
 function optionLabel(option: readonly [string, string, string]) {
   return document.documentElement.lang === 'zh-CN' ? option[1] : option[2]
@@ -63,6 +172,7 @@ function resetForm() {
   formState.industry = 'banking'
   formState.scale = 'startup'
   formState.website = ''
+  resetTurnstile()
 }
 
 function readErrorMessage(payload: unknown) {
@@ -91,6 +201,7 @@ async function submit() {
       },
       body: JSON.stringify({
         ...formState,
+        turnstileToken: turnstileToken.value,
         locale: currentLocale.value,
         source: window.location.pathname,
       }),
@@ -108,6 +219,7 @@ async function submit() {
   } catch (error) {
     submitStatus.value = 'error'
     statusMessage.value = error instanceof Error ? error.message : t.value.submitError
+    resetTurnstile()
   } finally {
     isSubmitting.value = false
   }
@@ -192,6 +304,7 @@ async function submit() {
               </option>
             </select>
           </div>
+          <div ref="turnstileContainer" class="min-h-[65px]" />
           <p
             v-if="statusMessage"
             class="rounded-xl border px-4 py-3 text-sm"
