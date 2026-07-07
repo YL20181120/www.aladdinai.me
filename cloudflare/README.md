@@ -43,12 +43,15 @@ Yes, D1 tables must be created manually. Run the schema once after creating or r
 npx wrangler d1 execute aladdinai --remote --file=cloudflare/d1/schema.sql
 ```
 
-## Optional Notification
+## Feishu Notification
 
-To forward each lead to a webhook, add a Worker environment variable in the Cloudflare dashboard:
+To forward each lead to a signed Feishu bot, add Worker environment variables in the Cloudflare dashboard:
 
 ```text
-NOTIFY_WEBHOOK_URL=https://example.com/webhook
+FEISHU_TOKEN=<bot-webhook-token>
+FEISHU_SECRET=<bot-signing-secret>
 ```
 
-The form still succeeds if the webhook is temporarily unavailable, because the lead is stored in D1 first.
+The token is the path after `https://open.feishu.cn/open-apis/bot/v2/hook/`.
+
+The form still succeeds if Feishu is temporarily unavailable, because the lead is stored in D1 first.

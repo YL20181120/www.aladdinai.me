@@ -9,7 +9,8 @@ interface D1Database {
 
 interface Env {
   DB?: D1Database
-  NOTIFY_WEBHOOK_URL?: string
+  FEISHU_SECRET?: string
+  FEISHU_TOKEN?: string
   TURNSTILE_SECRET_KEY?: string
 }
 
@@ -32,6 +33,7 @@ interface TurnstileVerifyResponse {
 const allowedIndustries = new Set(['banking', 'consumer_finance', 'micro_loan', 'supply_chain', 'other'])
 const allowedScales = new Set(['startup', 'growth', 'mature', 'enterprise'])
 const allowedLocales = new Set(['zh', 'en'])
+const feishuBaseUrl = 'https://open.feishu.cn/open-apis/bot/v2/hook/'
 
 function jsonResponse(payload: Record<string, unknown>, status = 200) {
   return Response.json(payload, {
@@ -54,20 +56,62 @@ async function readPayload(request: Request) {
   }
 }
 
-async function sendNotification(env: Env, data: Record<string, string>) {
-  if (!env.NOTIFY_WEBHOOK_URL) {
+function bytesToBase64(bytes: ArrayBuffer) {
+  let binary = ''
+  const array = new Uint8Array(bytes)
+
+  for (const byte of array) {
+    binary += String.fromCharCode(byte)
+  }
+
+  return btoa(binary)
+}
+
+async function createFeishuSign(timestamp: string, secret: string) {
+  const encoder = new TextEncoder()
+  const keyData = encoder.encode(`${timestamp}\n${secret}`)
+  const cryptoKey = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const signature = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(''))
+
+  return bytesToBase64(signature)
+}
+
+function buildFeishuMessage(data: Record<string, string>) {
+  return [
+    'Aladdin AI 新预约',
+    `ID: ${data.id}`,
+    `名称: ${data.name}`,
+    `联系方式: ${data.contact}`,
+    `行业: ${data.industry}`,
+    `规模: ${data.scale}`,
+    `语言: ${data.locale}`,
+    `来源: ${data.source}`,
+    `国家/地区: ${data.country || '-'}`,
+    `提交时间: ${data.createdAt}`,
+  ].join('\n')
+}
+
+async function sendFeishuNotification(env: Env, data: Record<string, string>) {
+  if (!env.FEISHU_TOKEN || !env.FEISHU_SECRET) {
     return
   }
 
   try {
-    await fetch(env.NOTIFY_WEBHOOK_URL, {
+    const timestamp = String(Math.round(Date.now() / 1000))
+    const sign = await createFeishuSign(timestamp, env.FEISHU_SECRET)
+
+    await fetch(`${feishuBaseUrl}${env.FEISHU_TOKEN}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: `New Aladdin AI demo request: ${data.name} / ${data.contact} / ${data.industry} / ${data.scale}`,
-        ...data,
+        msg_type: 'text',
+        timestamp,
+        sign,
+        content: {
+          text: buildFeishuMessage(data),
+        },
       }),
     })
   } catch {
@@ -150,6 +194,7 @@ async function handleDemoRequest(request: Request, env: Env) {
   const country = readString(request.headers.get('cf-ipcountry'), 20)
   const normalizedLocale = allowedLocales.has(locale) ? locale : 'zh'
   const normalizedSource = source || '/'
+  const createdAt = new Date().toISOString()
 
   await env.DB.prepare(
     `INSERT INTO demo_requests (
@@ -169,7 +214,7 @@ async function handleDemoRequest(request: Request, env: Env) {
     .bind(id, name, contact, industry, scale, normalizedLocale, normalizedSource, userAgent, ip, country)
     .run()
 
-  await sendNotification(env, {
+  await sendFeishuNotification(env, {
     id,
     name,
     contact,
@@ -178,6 +223,7 @@ async function handleDemoRequest(request: Request, env: Env) {
     locale: normalizedLocale,
     source: normalizedSource,
     country,
+    createdAt,
   })
 
   return jsonResponse({ ok: true, id })
