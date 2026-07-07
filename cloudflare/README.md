@@ -7,14 +7,18 @@ The demo form submits to `functions/api/demo-request.ts` and stores leads in Clo
 Create a D1 database in Cloudflare, then run the schema:
 
 ```bash
-npx wrangler d1 execute <database-name> --remote --file=cloudflare/d1/schema.sql
+npx wrangler d1 execute aladdinai --remote --file=cloudflare/d1/schema.sql
 ```
 
-In Cloudflare Pages, bind the D1 database to the variable name:
+The Pages project is configured in `wrangler.toml`:
 
 ```text
-DB
+Project name: www-aladdinai-me
+D1 binding: DB
+D1 database: aladdinai
 ```
+
+After changing bindings or schema, create a new Cloudflare Pages deployment for the settings to take effect.
 
 ## Optional Notification
 

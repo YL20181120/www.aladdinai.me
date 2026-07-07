@@ -1,0 +1,8 @@
+name = "www-aladdinai-me"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-07-07"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aladdinai"
+database_id = "2fcddcdf-0fff-435d-afdb-380f3bd95292"
