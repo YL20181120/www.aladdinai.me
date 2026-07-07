@@ -1,28 +1,37 @@
-# Cloudflare Form Setup
+# Cloudflare Workers Setup
 
-The demo form submits to `functions/api/demo-request.ts` and stores leads in Cloudflare D1.
+The site deploys as a Cloudflare Worker with Static Assets. The Vue build is uploaded from `dist`, and the demo form submits to `/api/demo-request` in `src/worker.ts`.
+
+## Deploy
+
+Cloudflare build settings:
+
+```text
+Build command: pnpm run build
+Deploy command: npx wrangler deploy
+```
+
+The Worker deployment is configured in `wrangler.toml`:
+
+```text
+Worker name: www-aladdinai-me
+Worker entry: src/worker.ts
+Static assets: dist
+D1 binding: DB
+D1 database: aladdinai
+```
 
 ## D1
 
-Create a D1 database in Cloudflare, then run the schema:
+Run the schema after creating or resetting the D1 database:
 
 ```bash
 npx wrangler d1 execute aladdinai --remote --file=cloudflare/d1/schema.sql
 ```
 
-The Pages project is configured in `wrangler.toml`:
-
-```text
-Project name: www-aladdinai-me
-D1 binding: DB
-D1 database: aladdinai
-```
-
-After changing bindings or schema, create a new Cloudflare Pages deployment for the settings to take effect.
-
 ## Optional Notification
 
-To forward each lead to a webhook, add a Pages environment variable:
+To forward each lead to a webhook, add a Worker environment variable:
 
 ```text
 NOTIFY_WEBHOOK_URL=https://example.com/webhook

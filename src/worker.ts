@@ -7,14 +7,14 @@ interface D1Database {
   prepare(query: string): D1PreparedStatement
 }
 
-interface Env {
-  DB?: D1Database
-  NOTIFY_WEBHOOK_URL?: string
+interface AssetsBinding {
+  fetch(request: Request): Promise<Response>
 }
 
-interface PagesContext {
-  request: Request
-  env: Env
+interface Env {
+  ASSETS: AssetsBinding
+  DB?: D1Database
+  NOTIFY_WEBHOOK_URL?: string
 }
 
 interface DemoRequestPayload {
@@ -73,7 +73,11 @@ async function sendNotification(env: Env, data: Record<string, string>) {
   }
 }
 
-export async function onRequestPost({ request, env }: PagesContext) {
+async function handleDemoRequest(request: Request, env: Env) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, message: 'Method not allowed.' }, 405)
+  }
+
   if (!env.DB) {
     return jsonResponse({ ok: false, message: 'D1 database binding DB is not configured.' }, 500)
   }
@@ -136,4 +140,16 @@ export async function onRequestPost({ request, env }: PagesContext) {
   })
 
   return jsonResponse({ ok: true, id })
+}
+
+export default {
+  async fetch(request: Request, env: Env) {
+    const url = new URL(request.url)
+
+    if (url.pathname === '/api/demo-request') {
+      return handleDemoRequest(request, env)
+    }
+
+    return env.ASSETS.fetch(request)
+  },
 }
