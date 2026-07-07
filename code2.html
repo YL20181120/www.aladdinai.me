@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Core Features | Aladdin AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#011200",
+                    "surface-dim": "#101415",
+                    "on-surface": "#e0e3e5",
+                    "on-primary-container": "#777b8a",
+                    "secondary-fixed": "#74f5ff",
+                    "on-primary": "#2c303d",
+                    "surface-tint": "#c3c6d7",
+                    "tertiary-fixed": "#79ff5b",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "inverse-surface": "#e0e3e5",
+                    "primary": "#c3c6d7",
+                    "surface": "#101415",
+                    "on-primary-fixed": "#171b28",
+                    "surface-container-high": "#272a2c",
+                    "on-error": "#690005",
+                    "on-secondary": "#00363a",
+                    "primary-fixed": "#dfe2f3",
+                    "primary-container": "#0a0e1a",
+                    "outline-variant": "#46464c",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#c7c6cc",
+                    "secondary": "#ddfcff",
+                    "on-secondary-fixed": "#002022",
+                    "inverse-primary": "#5a5e6d",
+                    "inverse-on-surface": "#2d3133",
+                    "on-tertiary-fixed": "#022100",
+                    "tertiary": "#2ae500",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#00dbe7",
+                    "surface-variant": "#323537",
+                    "surface-container": "#1d2022",
+                    "surface-bright": "#363a3b",
+                    "on-background": "#e0e3e5",
+                    "surface-container-highest": "#323537",
+                    "on-tertiary": "#053900",
+                    "primary-fixed-dim": "#c3c6d7",
+                    "secondary-container": "#00f1fe",
+                    "on-tertiary-container": "#178f00",
+                    "surface-container-lowest": "#0b0f10",
+                    "on-primary-fixed-variant": "#434654",
+                    "outline": "#909096",
+                    "on-tertiary-fixed-variant": "#095300",
+                    "error-container": "#93000a",
+                    "background": "#101415",
+                    "surface-container-low": "#191c1e",
+                    "on-secondary-container": "#006a70",
+                    "tertiary-fixed-dim": "#2ae500"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "stack-lg": "32px",
+                    "container-max": "1280px",
+                    "stack-md": "16px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "title-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #101415;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.03) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 32px 32px, 32px 32px;
+            color: #e0e3e5;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 242, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+        .glow-green {
+            box-shadow: 0 0 15px rgba(42, 229, 0, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        [data-i18n] {
+            transition: opacity 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 h-20">
+<div class="max-w-container-max mx-auto px-margin-desktop flex items-center justify-between h-full">
+<div class="font-display-lg text-display-lg text-secondary dark:text-secondary tracking-tighter cursor-pointer">
+                Aladdin AI
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-300" data-i18n="nav-solutions" href="#">Solutions</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1" data-i18n="nav-features" href="#">Features</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-300" data-i18n="nav-pricing" href="#">Pricing</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-300" data-i18n="nav-about" href="#">About Us</a>
+</div>
+<div class="flex items-center gap-6">
+<!-- Language Switcher -->
+<button class="flex items-center gap-2 text-secondary hover:opacity-80 transition-opacity" id="lang-toggle">
+<span class="material-symbols-outlined">language</span>
+<span class="text-label-sm font-bold uppercase tracking-wider" id="current-lang">EN</span>
+</button>
+<button class="px-6 py-2.5 bg-secondary-container text-on-secondary-container font-bold rounded-full hover:scale-105 transition-transform duration-300 glow-cyan" data-i18n="cta-demo">
+                    Book a Demo
+                </button>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[716px] flex items-center overflow-hidden py-stack-lg">
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10 grid lg:grid-cols-2 gap-gutter items-center">
+<div>
+<span class="inline-block px-4 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-label-sm mb-stack-md uppercase tracking-widest" data-i18n="hero-tag">Architectural Overview</span>
+<h1 class="font-display-lg text-display-lg text-secondary mb-stack-md leading-tight" data-i18n="hero-title">The Sovereign Engine of Autonomous Finance</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-stack-lg" data-i18n="hero-desc">
+                        Aladdin AI integrates deep-tier machine learning with high-frequency financial protocols to deliver a hyper-efficient, 
+                        fully automated lending ecosystem. Experience 99.9% uptime and microsecond risk assessment.
+                    </p>
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-secondary text-headline-lg font-bold">1.2ms</span>
+<span class="text-on-surface-variant text-label-sm uppercase" data-i18n="stat-latency">Average Latency</span>
+</div>
+<div class="w-px h-12 bg-outline-variant/30"></div>
+<div class="flex flex-col">
+<span class="text-secondary text-headline-lg font-bold">10B+</span>
+<span class="text-on-surface-variant text-label-sm uppercase" data-i18n="stat-data">Data Points/Day</span>
+</div>
+<div class="w-px h-12 bg-outline-variant/30"></div>
+<div class="flex flex-col">
+<span class="text-tertiary text-headline-lg font-bold">99.8%</span>
+<span class="text-on-surface-variant text-label-sm uppercase" data-i18n="stat-fraud">Fraud Detection Rate</span>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="glass-card p-stack-lg rounded-xl relative overflow-hidden aspect-video flex items-center justify-center"><img alt="Autonomous Finance AI" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida/AP1WRLvdbgjODlQ7AFEQ45CeTUgyq_37j9pawNKrj_NHSl1a3AmJJ4_qvyhapYTDRGBp3W8IMrfPQARjf-Gx19Zf9tBF8NAB1NlKNHvvfscUll9v97g5p7ElcIaHcHQkopN7JMOypI-vlrOfpecEl39hPf8zNDtq7LRIoP2uRtVji7xq0HXA2bONt3lgApzJ01Kr6zwFbQqIPH9Y5RVWbfH9wZJfWyD07ynmT2i-moWl1rdpBgmvCOuLaX7XTwE"/></div>
+</div>
+</div>
+</section>
+<!-- Feature 1: All-Channel Reach -->
+<section class="py-24 bg-surface-container-low/50">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div class="order-2 lg:order-1">
+<div class="relative group"><img alt="All-Channel Intelligent Reach" class="rounded-xl border border-outline-variant/30 shadow-2xl transition-all duration-500 group-hover:scale-[1.02]" src="https://lh3.googleusercontent.com/aida/AP1WRLs6njI42nS_ZjAjNTKvzVr96EEVg8Z2VeSprDEWd9cJXv4k1M06F6S093Glk6V_sSZTo4l996-yc9IMr7gOIH20sAuK7wSa4bQGKknQ2xKk9Hg_1caZswdClAaMs4IO0ts3qDC2KtSWJVuSUONX28qUN45KLJ7ctbwESXqcW8qtq3f3IX3qXLOGhGI9Y6N78ZwIdcMKEeE4IHT5xkgCTmkU_UmjS_QTO-TZlcuBO9P56F_I0ZGR4V_aPT4"/></div>
+</div>
+<div class="order-1 lg:order-2">
+<h2 class="font-headline-lg text-headline-lg text-secondary mb-6" data-i18n="f1-title">01. All-Channel Intelligent Reach</h2>
+<p class="text-body-lg text-on-surface-variant mb-8" data-i18n="f1-desc">
+                            Break communication silos with our AI-driven omnichannel integration. Deploy intelligent bots across Telegram, WhatsApp, and proprietary portals that maintain stateful conversations with 100% data fidelity.
+                        </p>
+<ul class="space-y-4 mb-10">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span data-i18n="f1-l1">Real-time NLP for automated inquiry routing.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span data-i18n="f1-l2">End-to-end encrypted financial data transmission.</span>
+</li>
+</ul>
+<div class="p-4 bg-surface-container-highest rounded-lg border border-outline-variant/20">
+<code class="text-sm text-secondary-fixed" data-i18n="f1-api">API Response: HTTP 202 | latency: 42ms | load: 45k req/min</code>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature 2: Full Lifecycle Marketing -->
+<section class="py-24">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-16"><div class="max-w-2xl mx-auto mb-8 rounded-xl overflow-hidden border border-outline-variant/20 shadow-2xl"><img alt="AI Analytics Dashboard" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLt-xuBjxckUkAJqV3PNEbdYM2vFfqApwW6oP4kCCVqZsY_tlFAZjoz8MDjOipa_Z_yBBQAATyxbI1QmsuexVa0rsXZQUPUG-nph9VUiP6wKF38_SgSJhVyxrYsKziilQycAEMY-pYnNNAZJUElgXBd6RTbyF9HqbUhR1uZR-kwhnPMV77fRvW0x7XX84uC50S0Tg46QDM7WZAmPlrvoIkdW6Ak8jIzmcOKzwUSfn_QgpDQPO4cXvVbQ3Q"/></div>
+<h2 class="font-headline-lg text-headline-lg text-secondary mb-4" data-i18n="f2-title">02. Full Customer Lifecycle Marketing</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto" data-i18n="f2-desc">From acquisition to retention, our autonomous marketing engine optimizes Every touchpoint using predictive behavioral modeling.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card p-stack-lg rounded-xl flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">target</span>
+</div>
+<h3 class="font-title-md text-title-md text-secondary mb-3" data-i18n="f2-c1-t">Precision Targeting</h3>
+<p class="text-on-surface-variant" data-i18n="f2-c1-d">Segment users based on real-time financial behaviors and risk appetite.</p>
+</div>
+<div class="glass-card p-stack-lg rounded-xl border-secondary/20 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">auto_awesome</span>
+</div>
+<h3 class="font-title-md text-title-md text-secondary mb-3" data-i18n="f2-c2-t">Auto-Optimization</h3>
+<p class="text-on-surface-variant" data-i18n="f2-c2-d">A/B testing running 24/7 on creative assets and loan offer structures.</p>
+</div>
+<div class="glass-card p-stack-lg rounded-xl flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">rebase_edit</span>
+</div>
+<h3 class="font-title-md text-title-md text-secondary mb-3" data-i18n="f2-c3-t">Churn Prediction</h3>
+<p class="text-on-surface-variant" data-i18n="f2-c3-d">Identify at-risk customers with 94% accuracy before they leave the ecosystem.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature 3: Financial Automation -->
+<section class="py-24 bg-surface-container-low/50 relative">
+<div class="max-w-container-max mx-auto px-margin-desktop grid lg:grid-cols-2 gap-20 items-center">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-secondary mb-6" data-i18n="f3-title">03. Financial Automation Solutions</h2>
+<p class="text-body-lg text-on-surface-variant mb-8" data-i18n="f3-desc">
+                        Eliminate manual accounting. Aladdin AI handles automated settlement, ledger entries, and multi-currency reconciliation with zero human intervention.
+                    </p>
+<div class="space-y-6">
+<div class="flex items-center gap-6 glass-card p-4 rounded-lg">
+<div class="p-3 bg-tertiary/10 rounded-full">
+<span class="material-symbols-outlined text-tertiary">account_balance_wallet</span>
+</div>
+<div>
+<div class="text-secondary font-bold" data-i18n="f3-l1-t">Ledger Synchronization</div>
+<div class="text-on-surface-variant text-sm" data-i18n="f3-l1-d">Real-time sync across ERP and blockchain protocols.</div>
+</div>
+</div>
+<div class="flex items-center gap-6 glass-card p-4 rounded-lg">
+<div class="p-3 bg-tertiary/10 rounded-full">
+<span class="material-symbols-outlined text-tertiary">currency_exchange</span>
+</div>
+<div>
+<div class="text-secondary font-bold" data-i18n="f3-l2-t">Dynamic Settlement</div>
+<div class="text-on-surface-variant text-sm" data-i18n="f3-l2-d">Instant payout processing for approved loan disbursements.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group">
+<img alt="Financial Automation Interface" class="rounded-xl border border-outline-variant/30 shadow-2xl transition-all duration-500 group-hover:scale-[1.02]" src="https://lh3.googleusercontent.com/aida/AP1WRLv-__gfAeCYqnuS6nIrWRJlIzS4SLJdmBt7VloUCGEWzfa1wKgvXSyAC-rTFaw87GFc_Lg3Qerywqm1oKF1qV1dxjCm81Ba3JhM3j6JgKXbbTuxuCk48kQTpgTmkxVFjBkfAYE9IPzbbTyKuAplMpfKTZ2ystGQELfHxJFmbGhFMPiERIbHDsCghs4PYec-dG075SSLYHSB9SE7VdaSrFDviMs7ISAQ5xtpcSn_KLF48q4FQGjwVlqkTcI"/>
+<div class="absolute -top-6 -right-6 p-4 glass-card rounded-lg glow-green border-tertiary/40">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-tertiary rounded-full animate-pulse"></div>
+<span class="text-tertiary font-bold text-sm uppercase" data-i18n="live-status">Live Processing</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature 4: Intelligent Risk Control -->
+<section class="py-24">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div class="relative aspect-square"><img alt="Intelligent Risk Control" class="w-full h-full object-cover rounded-xl border border-outline-variant/30 shadow-2xl" src="https://lh3.googleusercontent.com/aida/AP1WRLvVQ19rU4QaraSR8x2fFaOoBoB4-Z-y6rhflW3TsIJR8Cy45eVLGLp_qKfVsOSxgee50xaEUZI4YXOpLFr7ZNuGB2089pze_PUR-taglXDh0ZzH65BF69lbXuc3TkdfNqX-_XuzVRqM7tVY6-Pva3e2sOzQQS3KGFX-MSaz8KVjH8pJHKHvPeX-Ry1aVw-PVNv680plIx-xs00s2AJhUk2TGTPB_Fz9wH0QNLk8xpi6kAQjDwWKDnifn64"/><div class="absolute inset-0 flex flex-col items-center justify-center text-center bg-surface/40 backdrop-blur-sm rounded-xl"><div class="text-display-lg text-secondary font-extrabold">99.8%</div><div class="text-on-surface-variant tracking-widest uppercase text-sm" data-i18n="f4-stat">Safety Integrity</div></div></div>
+<div>
+<h2 class="font-headline-lg text-headline-lg text-secondary mb-6" data-i18n="f4-title">04. Intelligent Risk Control</h2>
+<p class="text-body-lg text-on-surface-variant mb-8" data-i18n="f4-desc">
+                            Our proprietary "Sovereign Scan" engine leverages ensemble machine learning models to detect anomalies and fraudulent behavior in sub-millisecond windows.
+                        </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-6 border border-outline-variant/20 rounded-xl bg-surface-container">
+<div class="text-tertiary font-bold mb-1">KYC/AML</div>
+<p class="text-sm text-on-surface-variant" data-i18n="f4-c1">Automated identity verification and anti-money laundering checks.</p>
+</div>
+<div class="p-6 border border-outline-variant/20 rounded-xl bg-surface-container">
+<div class="text-tertiary font-bold mb-1" data-i18n="f4-c2-t">Behavioral Scans</div>
+<p class="text-sm text-on-surface-variant" data-i18n="f4-c2">Biometric and navigational pattern analysis for bot detection.</p>
+</div>
+<div class="p-6 border border-outline-variant/20 rounded-xl bg-surface-container">
+<div class="text-tertiary font-bold mb-1" data-i18n="f4-c3-t">Audit Trail</div>
+<p class="text-sm text-on-surface-variant" data-i18n="f4-c3">Immutable logs for all AI decisions and parameter shifts.</p>
+</div>
+<div class="p-6 border border-outline-variant/20 rounded-xl bg-surface-container">
+<div class="text-tertiary font-bold mb-1" data-i18n="f4-c4-t">Instant Hold</div>
+<p class="text-sm text-on-surface-variant" data-i18n="f4-c4">Automatic transaction suspension upon high-risk detection.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="py-32 relative overflow-hidden">
+<div class="absolute inset-0 bg-secondary/5"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop text-center relative z-10">
+<h2 class="font-display-lg text-display-lg text-secondary mb-6" data-i18n="final-cta-title">Ready for Technological Sovereignty?</h2>
+<p class="text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto" data-i18n="final-cta-desc">
+                    Join the league of elite financial institutions leveraging Aladdin AI for autonomous lending and intelligent risk control.
+                </p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center">
+<button class="px-10 py-5 bg-secondary-container text-on-secondary-container font-extrabold text-lg rounded-full glow-cyan hover:scale-105 transition-all duration-300" data-i18n="cta-demo">
+                        Book a Live Demo
+                    </button>
+<button class="px-10 py-5 border-2 border-secondary text-secondary font-extrabold text-lg rounded-full hover:bg-secondary/10 transition-all duration-300" data-i18n="cta-docs">
+                        View Technical Docs
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop py-stack-lg grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1">
+<div class="font-headline-lg text-headline-lg text-secondary mb-4">Aladdin AI</div>
+<p class="text-on-surface-variant text-sm" data-i18n="footer-desc">Empowering financial institutions with autonomous AI engines.</p>
+</div>
+<div>
+<h4 class="text-secondary font-bold mb-4" data-i18n="foot-h1">Products</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-p1" href="#">Lending Engine</a></li>
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-p2" href="#">Risk Control</a></li>
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-p3" href="#">Marketing Automation</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-secondary font-bold mb-4" data-i18n="foot-h2">Company</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-secondary-container transition-all" data-i18n="nav-about" href="#">About Us</a></li>
+<li><a class="hover:text-secondary-container transition-all" data-i18n="nav-solutions" href="#">Solutions</a></li>
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-c3" href="#">Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-secondary font-bold mb-4" data-i18n="foot-h3">Legal</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-l1" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-secondary-container transition-all" data-i18n="f-l2" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="text-on-surface-variant text-sm" data-i18n="footer-copy">
+                © 2024 Aladdin AI. Technological Sovereignty Reserved.
+            </div>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">public</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">rss_feed</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">share</span>
+</div>
+</div>
+</footer>
+<script>
+        // Localization Data
+        const translations = {
+            en: {
+                "nav-solutions": "Solutions",
+                "nav-features": "Features",
+                "nav-pricing": "Pricing",
+                "nav-about": "About Us",
+                "cta-demo": "Book a Demo",
+                "hero-tag": "Architectural Overview",
+                "hero-title": "The Sovereign Engine of Autonomous Finance",
+                "hero-desc": "Aladdin AI integrates deep-tier machine learning with high-frequency financial protocols to deliver a hyper-efficient, fully automated lending ecosystem. Experience 99.9% uptime and microsecond risk assessment.",
+                "stat-latency": "Average Latency",
+                "stat-data": "Data Points/Day",
+                "stat-fraud": "Fraud Detection Rate",
+                "f1-title": "01. All-Channel Intelligent Reach",
+                "f1-desc": "Break communication silos with our AI-driven omnichannel integration. Deploy intelligent bots across Telegram, WhatsApp, and proprietary portals that maintain stateful conversations with 100% data fidelity.",
+                "f1-t1": "Telegram",
+                "f1-s1": "Native Bot API",
+                "f1-t2": "WhatsApp",
+                "f1-s2": "Meta Enterprise",
+                "f1-t3": "Omnichannel",
+                "f1-s3": "Unified Inbox",
+                "f1-t4": "Webhook",
+                "f1-s4": "< 50ms Push",
+                "f1-l1": "Real-time NLP for automated inquiry routing.",
+                "f1-l2": "End-to-end encrypted financial data transmission.",
+                "f1-api": "API Response: HTTP 202 | latency: 42ms | load: 45k req/min",
+                "f2-title": "02. Full Customer Lifecycle Marketing",
+                "f2-desc": "From acquisition to retention, our autonomous marketing engine optimizes Every touchpoint using predictive behavioral modeling.",
+                "f2-c1-t": "Precision Targeting",
+                "f2-c1-d": "Segment users based on real-time financial behaviors and risk appetite.",
+                "f2-c2-t": "Auto-Optimization",
+                "f2-c2-d": "A/B testing running 24/7 on creative assets and loan offer structures.",
+                "f2-c3-t": "Churn Prediction",
+                "f2-c3-d": "Identify at-risk customers with 94% accuracy before they leave the ecosystem.",
+                "f3-title": "03. Financial Automation Solutions",
+                "f3-desc": "Eliminate manual accounting. Aladdin AI handles automated settlement, ledger entries, and multi-currency reconciliation with zero human intervention.",
+                "f3-l1-t": "Ledger Synchronization",
+                "f3-l1-d": "Real-time sync across ERP and blockchain protocols.",
+                "f3-l2-t": "Dynamic Settlement",
+                "f3-l2-d": "Instant payout processing for approved loan disbursements.",
+                "live-status": "Live Processing",
+                "f4-title": "04. Intelligent Risk Control",
+                "f4-desc": "Our proprietary \"Sovereign Scan\" engine leverages ensemble machine learning models to detect anomalies and fraudulent behavior in sub-millisecond windows.",
+                "f4-stat": "Safety Integrity",
+                "f4-c1": "Automated identity verification and anti-money laundering checks.",
+                "f4-c2-t": "Behavioral Scans",
+                "f4-c2": "Biometric and navigational pattern analysis for bot detection.",
+                "f4-c3-t": "Audit Trail",
+                "f4-c3": "Immutable logs for all AI decisions and parameter shifts.",
+                "f4-c4-t": "Instant Hold",
+                "f4-c4": "Automatic transaction suspension upon high-risk detection.",
+                "final-cta-title": "Ready for Technological Sovereignty?",
+                "final-cta-desc": "Join the league of elite financial institutions leveraging Aladdin AI for autonomous lending and intelligent risk control.",
+                "cta-docs": "View Technical Docs",
+                "footer-desc": "Empowering financial institutions with autonomous AI engines.",
+                "foot-h1": "Products",
+                "f-p1": "Lending Engine",
+                "f-p2": "Risk Control",
+                "f-p3": "Marketing Automation",
+                "foot-h2": "Company",
+                "f-c3": "Support",
+                "foot-h3": "Legal",
+                "f-l1": "Privacy Policy",
+                "f-l2": "Terms of Service",
+                "footer-copy": "© 2024 Aladdin AI. Technological Sovereignty Reserved."
+            },
+            cn: {
+                "nav-solutions": "解决方案",
+                "nav-features": "核心功能",
+                "nav-pricing": "价格详情",
+                "nav-about": "关于我们",
+                "cta-demo": "预约演示",
+                "hero-tag": "系统架构概览",
+                "hero-title": "全流程AI自动放款系统",
+                "hero-desc": "Aladdin AI 集成深层机器学习与高频金融协议，提供超高效的全自动贷款生态系统。体验 99.9% 的正常运行时间和微秒级的风险评估。",
+                "stat-latency": "平均延迟",
+                "stat-data": "每日数据处理量",
+                "stat-fraud": "欺诈检测率",
+                "f1-title": "01. 全渠道智能触达",
+                "f1-desc": "通过我们的 AI 驱动型全渠道集成打破沟通孤岛。在 Telegram、WhatsApp 和自有门户部署智能机器人，维持 100% 数据保真度的状态化对话。",
+                "f1-t1": "Telegram",
+                "f1-s1": "原生机器人接口",
+                "f1-t2": "WhatsApp",
+                "f1-s2": "Meta 企业级方案",
+                "f1-t3": "全渠道集成",
+                "f1-s3": "统一收件箱",
+                "f1-t4": "Webhook",
+                "f1-s4": "< 50ms 推送",
+                "f1-l1": "实时自然语言处理，自动分流咨询。",
+                "f1-l2": "端到端加密的金融数据传输。",
+                "f1-api": "API 响应: HTTP 202 | 延迟: 42ms | 负载: 4.5w/分",
+                "f2-title": "02. 全生命周期营销",
+                "f2-desc": "从获客到留存，我们的自主营销引擎利用预测性行为建模优化每一个触点。",
+                "f2-c1-t": "精准定向",
+                "f2-c1-d": "基于实时财务行为和风险偏好进行用户细分。",
+                "f2-c2-t": "自动优化",
+                "f2-c2-d": "全天候运行针对创意资产和贷款方案的 A/B 测试。",
+                "f2-c3-t": "流失预测",
+                "f2-c3-d": "在客户离开生态系统前，以 94% 的准确率识别流失风险。",
+                "f3-title": "03. 财务自动化方案",
+                "f3-desc": "消除手动会计。Aladdin AI 负责处理自动结算、账簿记录及多币种对账，全程无需人工干预。",
+                "f3-l1-t": "分类账实时同步",
+                "f3-l1-d": "在 ERP 与区块链协议间实现毫秒级同步。",
+                "f3-l2-t": "动态结算",
+                "f3-l2-d": "针对已批准的贷款发放进行即时放款处理。",
+                "live-status": "正在实时处理",
+                "f4-title": "04. 智能风险核实",
+                "f4-desc": "我们专有的 “Sovereign Scan” 引擎利用集成机器学习模型，在亚毫秒级别检测异常和欺诈行为。",
+                "f4-stat": "系统安全完整性",
+                "f4-c1": "自动身份验证与反洗钱检查。",
+                "f4-c2-t": "行为扫描",
+                "f4-c2": "用于机器人检测的生物特征与导航模式分析。",
+                "f4-c3-t": "审计追踪",
+                "f4-c3": "所有 AI 决策和参数调整的不可篡改日志。",
+                "f4-c4-t": "即时挂起",
+                "f4-c4": "检测到高风险时自动挂起交易。",
+                "final-cta-title": "准备好拥抱技术主权了吗？",
+                "final-cta-desc": "加入全球领先金融机构行列，利用 Aladdin AI 实现自主贷款与智能风险控制。",
+                "cta-docs": "查看技术文档",
+                "footer-desc": "利用自主 AI 引擎赋能金融机构。",
+                "foot-h1": "产品中心",
+                "f-p1": "信贷引擎",
+                "f-p2": "风控系统",
+                "f-p3": "自动化营销",
+                "foot-h2": "关于公司",
+                "f-c3": "客户支持",
+                "foot-h3": "法律条款",
+                "f-l1": "隐私政策",
+                "f-l2": "服务条款",
+                "footer-copy": "© 2024 Aladdin AI. 保留所有技术主权。"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function updateContent() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.textContent = translations[currentLang][key];
+                        el.style.opacity = 1;
+                    }, 200);
+                }
+            });
+            document.getElementById('current-lang').textContent = currentLang.toUpperCase();
+            document.documentElement.lang = currentLang;
+        }
+
+        document.getElementById('lang-toggle').addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'cn' : 'en';
+            updateContent();
+        });
+
+        // Initialize micro-interactions
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body></html>
