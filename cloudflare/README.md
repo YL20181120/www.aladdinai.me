@@ -21,6 +21,8 @@ D1 binding: DB
 D1 database: aladdinai
 ```
 
+`keep_vars = true` is enabled in `wrangler.toml`, so variables and secrets configured in the Cloudflare dashboard are preserved across `wrangler deploy`.
+
 ## Turnstile
 
 The demo form uses Cloudflare Turnstile to reduce spam submissions.
@@ -43,7 +45,7 @@ npx wrangler d1 execute aladdinai --remote --file=cloudflare/d1/schema.sql
 
 ## Optional Notification
 
-To forward each lead to a webhook, add a Worker environment variable:
+To forward each lead to a webhook, add a Worker environment variable in the Cloudflare dashboard:
 
 ```text
 NOTIFY_WEBHOOK_URL=https://example.com/webhook

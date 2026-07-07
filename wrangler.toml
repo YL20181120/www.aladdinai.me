@@ -1,6 +1,7 @@
 name = "www-aladdinai-me"
 main = "server/index.ts"
 compatibility_date = "2026-07-07"
+keep_vars = true
 
 [assets]
 directory = "./dist/"
