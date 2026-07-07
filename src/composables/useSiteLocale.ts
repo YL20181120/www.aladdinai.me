@@ -59,6 +59,9 @@ const messages = {
     labelIndustry: '所属行业',
     labelScale: '业务规模',
     submit: '提交申请',
+    submitting: '提交中...',
+    submitSuccess: '已收到预约信息，我们会尽快联系您。',
+    submitError: '提交失败，请稍后重试，或直接发送邮件至 support@aladdinai.me。',
     thanks: '感谢您的预约！我们的团队将很快与您联系。',
   },
   en: {
@@ -115,6 +118,9 @@ const messages = {
     labelIndustry: 'Industry',
     labelScale: 'Business Scale',
     submit: 'Submit Request',
+    submitting: 'Submitting...',
+    submitSuccess: 'Your request has been received. We will contact you shortly.',
+    submitError: 'Submission failed. Please try again later or email support@aladdinai.me directly.',
     thanks: 'Thank you for your request! Our team will contact you shortly.',
   },
 } satisfies Record<Locale, Record<string, string>>
